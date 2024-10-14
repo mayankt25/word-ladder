@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
-import HomePage from './HomePage';
-import GamePage from './GamePage';
-import SolvePage from './SolvePage';
+import { HomePage } from './HomePage';
+import { GamePage } from './GamePage';
+import { SolvePage } from './SolvePage';
 
-function App() {
+export const App = () => {
   return (
     <Router>
       <Routes>
@@ -16,5 +16,3 @@ function App() {
     </Router>
   );
 }
-
-export default App;

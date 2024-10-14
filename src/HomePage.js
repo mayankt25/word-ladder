@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-function HomePage() {
+export const HomePage = () => {
     const navigate = useNavigate();
 
     return (
@@ -12,5 +12,3 @@ function HomePage() {
         </Container>
     );
 }
-
-export default HomePage;

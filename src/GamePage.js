@@ -4,8 +4,9 @@ import { Container, Button, Form, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
+import { FaLightbulb } from 'react-icons/fa';
 
-function GamePage() {
+export const GamePage = () => {
     const [startWord, setStartWord] = useState("");
     const [endWord, setEndWord] = useState("");
     const [currentWord, setCurrentWord] = useState("");
@@ -24,6 +25,43 @@ function GamePage() {
 
     const handleInputChange = (e) => {
         setInputWord(e.target.value);
+    };
+
+    const handleHintClick = async () => {
+        const start = wordHistory.length === 0 ? startWord : wordHistory[wordHistory.length - 1];
+        const end = endWord;
+
+        try {
+            const response = await axios.get(`https://this.api.com/is/from/dora?start=${start}&end=${end}`);
+            const words = response.data;
+
+            if (words.length > 1) {
+                const nextWord = words[1];
+                const definition = await getWordDefinition(nextWord);
+
+                toast.info(`The next word starts with '${nextWord.charAt(0)}' and it means "${definition}"`);
+            } else {
+                toast.info('No hint available. Try adding more words!');
+            }
+        } catch (error) {
+            console.error('Error fetching hint:', error);
+            toast.error('Failed to get a hint. Please try again.');
+        }
+    };
+
+    const getWordDefinition = async (word) => {
+        try {
+            const response = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+            if (response.status === 200 && Array.isArray(response.data) && response.data.length > 0) {
+                const meanings = response.data[0].meanings;
+                if (meanings.length > 0 && meanings[0].definitions.length > 0) {
+                    return meanings[0].definitions[0].definition;
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching word definition:', error);
+        }
+        return 'Definition not found';
     };
 
     const handleAddWord = () => {
@@ -94,8 +132,11 @@ function GamePage() {
     };
 
     return (
-        <Container className="game-container">
+        <Container className="game-container position-relative">
             <h1>Word Ladder Game</h1>
+            <Button className="hint-button" variant="warning" onClick={handleHintClick}>
+                <FaLightbulb size={24} />
+            </Button>
             <Alert variant="primary">
                 {loading ? "Generating Words..." : `Start Word: ${startWord.toUpperCase()}, End Word: ${endWord.toUpperCase()}`}
             </Alert>
@@ -111,13 +152,11 @@ function GamePage() {
                 <Button className="mt-2" onClick={handleAddWord}>Add Word</Button>
             </Form>
             <div className="word-history mt-4">
-                {wordHistory.map((word, idx) => (
-                    <Alert key={idx} variant="success">{word.toUpperCase()}</Alert>
+                {wordHistory.map((word, i) => (
+                    <Alert key={i} variant="success">{word.toUpperCase()}</Alert>
                 ))}
             </div>
             <ToastContainer />
         </Container>
     );
 }
-
-export default GamePage;

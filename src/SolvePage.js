@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Container, Form, Button, Alert } from 'react-bootstrap';
 import axios from 'axios';
 
-function SolvePage() {
+export const SolvePage = () => {
     const [startWord, setStartWord] = useState("");
     const [endWord, setEndWord] = useState("");
     const [wordLadder, setWordLadder] = useState([]);
@@ -51,5 +51,3 @@ function SolvePage() {
         </Container>
     );
 }
-
-export default SolvePage;
