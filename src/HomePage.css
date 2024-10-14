@@ -1,0 +1,14 @@
+.logo-image {
+    width: 80%;
+    height: auto;
+    max-height: 30vh;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+}
+
+@media (min-width: 992px) {
+    .logo-image {
+        width: 50%;
+        padding-bottom: 40px;
+    }
+}

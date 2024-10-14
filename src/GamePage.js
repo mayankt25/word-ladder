@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import { FaLightbulb } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import "./index.css"
 
 export const GamePage = () => {
     const [startWord, setStartWord] = useState("");
@@ -73,7 +74,7 @@ export const GamePage = () => {
             checkIfWordExists(inputWord).then((exists) => {
                 if (!exists) {
                     toast.error("Word does not exist!");
-                } else if (!isOneLetterDifference(currentWord, inputWord)) {
+                } else if (!isOneLetterDifference(currentWord.toUpperCase(), inputWord.toUpperCase())) {
                     toast.error("Word must differ by exactly one letter!");
                 } else {
                     setWordHistory([...wordHistory, inputWord]);
