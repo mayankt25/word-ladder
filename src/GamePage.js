@@ -5,6 +5,7 @@ import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import { FaLightbulb } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 export const GamePage = () => {
     const [startWord, setStartWord] = useState("");
@@ -13,6 +14,7 @@ export const GamePage = () => {
     const [inputWord, setInputWord] = useState("");
     const [wordHistory, setWordHistory] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchWordsOfSameLength(5).then(({ start, end }) => {
@@ -74,12 +76,21 @@ export const GamePage = () => {
                 } else if (!isOneLetterDifference(currentWord, inputWord)) {
                     toast.error("Word must differ by exactly one letter!");
                 } else {
-                    setWordHistory([...wordHistory, inputWord.toUpperCase()]);
-                    setCurrentWord(inputWord.toUpperCase());
+                    setWordHistory([...wordHistory, inputWord]);
+                    setCurrentWord(inputWord);
+
+                    if (inputWord.toUpperCase() === endWord.toUpperCase()) {
+                        const steps = wordHistory.length + 1;
+                        toast.success(`Well Done! You solved the puzzle in ${steps} steps!`, {
+                            onClose: () => {
+                                navigate("/");
+                            },
+                        });
+                    }
                 }
             });
         }
-        setInputWord(""); 
+        setInputWord("");
     };
 
     const fetchWordsOfSameLength = async (maxLength) => {
