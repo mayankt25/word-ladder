@@ -48,34 +48,22 @@ function GamePage() {
         let startWord = "";
         let endWord = "";
         try {
-            while (startWord.length === 0 || startWord.length !== endWord.length || startWord.length > maxLength) {
-                const candidateStartWord = await generateRandomWord(maxLength);
-                const candidateEndWord = await generateRandomWord(maxLength);
-                if (candidateStartWord.length <= maxLength && candidateEndWord.length <= maxLength) {
-                    startWord = candidateStartWord;
-                    endWord = candidateEndWord;
+            const randomLength = Math.floor(Math.random() * (maxLength - 3 + 1)) + 3;
+            const startResponse = await axios.get(`https://random-word-api.vercel.app/api?words=1&length=${randomLength}`);
+            const endResponse = await axios.get(`https://random-word-api.vercel.app/api?words=1&length=${randomLength}`);
+    
+            startWord = startResponse.data[0];
+            endWord = endResponse.data[0];
+    
+            if (startWord.length <= maxLength && endWord.length <= maxLength) {
+                if (await checkIfWordExists(startWord) && await checkIfWordExists(endWord)) {
+                    return { start: startWord, end: endWord };
                 }
             }
         } catch (error) {
             console.error("Error fetching random words:", error);
         }
         return { start: startWord, end: endWord };
-    };
-
-    const generateRandomWord = async (maxLength) => {
-        let word = "";
-        try {
-            while (true) {
-                const response = await axios.get("https://random-word-api.herokuapp.com/word?number=1");
-                word = response.data[0];
-                if (word.length <= maxLength && await checkIfWordExists(word)) {
-                    return word;
-                }
-            }
-        } catch (error) {
-            console.error("Error generating word:", error);
-        }
-        return word;
     };
 
     const checkIfWordExists = async (word) => {
