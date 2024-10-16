@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Container, Form, Button, Alert } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const SolvePage = () => {
     const [startWord, setStartWord] = useState("");
@@ -10,6 +12,10 @@ export const SolvePage = () => {
 
     const handleSolve = async () => {
         setError("");
+        if (startWord.length !== endWord.length) {
+            toast.error("Start and end words must be the same length!");
+            return;
+        }
         try {
             const response = await axios.get(`https://this.api.com/is/from/dora?start=${startWord}&end=${endWord}`);
             setWordLadder(response.data);
@@ -48,6 +54,7 @@ export const SolvePage = () => {
                     Word Ladder: {wordLadder.join(" -> ")}
                 </Alert>
             )}
+            <ToastContainer />
         </Container>
     );
 }
