@@ -3,12 +3,43 @@
     height: auto;
     max-height: 30vh;
     margin-bottom: 20px;
+    margin-top: 250px;
     padding-bottom: 20px;
 }
+.b-1{
+    width: 200%;
+    border-color: brown;
+    margin-right: 5px;
+}
+.b-2{
+    width: 200%;
+    border-color: brown;
+    margin-right: 5px;
 
+}
+.mb-3{
+    margin-top: 80px;
+    margin-right: 40px;
+    width: 50%;
+
+}
+.mb-4{
+    margin-top: 90px;
+}
 @media (min-width: 992px) {
     .logo-image {
         width: 50%;
         padding-bottom: 40px;
     }
 }
+
+.homepage-container {
+    background-image:url('C:/Users/DELL/OneDrive/Desktop/NS Project/word-ladder/src/bg.jpg'); 
+    background-size:cover;
+    background-position: center;
+    height: 100vh;
+    width: 100vw; 
+
+
+  }
+  

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import { Container, Button, Form, Alert } from 'react-bootstrap';
+import {Button, Form, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import { FaLightbulb } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import "./index.css"
+import "./GamePage.css"
+import "./solvebg.jpg"
 
 export const GamePage = () => {
     const [startWord, setStartWord] = useState("");
@@ -144,31 +146,39 @@ export const GamePage = () => {
     };
 
     return (
-        <Container className="game-container position-relative">
-            <h1>Word Ladder Game</h1>
+        <body className="game-container position-relative ">
+            <h1 className='header'>Word Ladder Game</h1>
             <Button className="hint-button" variant="warning" onClick={handleHintClick}>
                 <FaLightbulb size={24} />
             </Button>
-            <Alert variant="primary">
+            <Alert variant="primary" className={`t-1 ${loading ? 'generating-text' : 'normal-text'}`}>
                 {loading ? "Generating Words..." : `Start Word: ${startWord.toUpperCase()}, End Word: ${endWord.toUpperCase()}`}
             </Alert>
             <Form>
                 <Form.Group controlId="wordInput">
-                    <Form.Control
+                    <div  className='word-input'>
+                    <Form.Control  
                         type="text"
                         placeholder="Enter next word"
                         value={inputWord}
                         onChange={handleInputChange}
                     />
+                    </div>
                 </Form.Group>
                 <Button className="mt-2" onClick={handleAddWord}>Add Word</Button>
             </Form>
             <div className="word-history mt-4">
-                {wordHistory.map((word, i) => (
-                    <Alert key={i} variant="success">{word.toUpperCase()}</Alert>
-                ))}
-            </div>
+  {wordHistory.length > 0 && (
+    <>
+      <Alert key="start" variant="success">{startWord.toUpperCase()}</Alert>
+      {wordHistory.map((word, i) => (
+        <Alert key={i} variant="success">{word.toUpperCase()}</Alert>
+      ))}
+      <Alert key="end" variant="success">{endWord.toUpperCase()}</Alert>
+    </>
+  )}
+</div>
             <ToastContainer />
-        </Container>
+        </body>
     );
 }
